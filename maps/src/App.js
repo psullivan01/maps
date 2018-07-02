@@ -62,19 +62,15 @@ class App extends Component {
 
     axios.all(promises).then((results)=>{
       results.forEach((response)=>{
-        response.data.routes[0].legs[0].steps.forEach((start_location)=>{
-          var lat = start_location.start_location.lat
-          var lng = start_location.start_location.lng
 
-          myCoordinates.push([lat, lng])
-        })
-      })
-      console.log(myCoordinates);
-      console.log(this);
-      this.setState({coordinates: myCoordinates}, ()=>{
-        console.log(this.state);
-      })
+        let startLat = response.data.routes[0].legs[0].start_location.lat;
+        let startLng = response.data.routes[0].legs[0].start_location.lng;
+        let endLat = response.data.routes[0].legs[0].end_location.lat;
+        let endLng = response.data.routes[0].legs[0].end_location.lng;
 
+        myCoordinates.push([startLat, startLng], [endLat, endLng]);
+      })
+      this.setState({coordinates: myCoordinates})
     })
   }
 
