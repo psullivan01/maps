@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
+import './styles/App.css';
 import axios from 'axios'
-import JourneyMap from './JourneyMap.js'
-import List from './List.js'
-import ListFormHeader from './ListFormHeader.js'
-import ListForm from './ListForm.js'
-import GenerateButton from './GenerateButton.js'
+import JourneyMap from './components/JourneyMap.js'
+import List from './components/List.js'
+import ListFormHeader from './components/ListFormHeader.js'
+import ListForm from './components/ListForm.js'
+import GenerateButton from './components/GenerateButton.js'
 
 const key = 'AIzaSyDEO9bMG0RJLyUr1GK3xiUqD__TN5rdjio'
 var listItems = []
