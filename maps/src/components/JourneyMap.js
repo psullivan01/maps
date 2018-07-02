@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Map, TileLayer, Polyline, Popup} from 'react-leaflet';
 import '../styles/JourneyMap.css';
 import { RSA_PKCS1_OAEP_PADDING } from 'constants';

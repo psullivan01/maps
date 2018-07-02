@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
+import './styles/App.css';
 import axios from 'axios'
-import JourneyMap from './JourneyMap.js'
-import List from './List.js'
-import ListFormHeader from './ListFormHeader.js'
-import ListForm from './ListForm.js'
-import GenerateButton from './GenerateButton.js'
+import JourneyMap from './components/JourneyMap.js'
+import List from './components/List.js'
+import ListFormHeader from './components/ListFormHeader.js'
+import ListForm from './components/ListForm.js'
+import GenerateButton from './components/GenerateButton.js'
+import MyMap from './components/MyMap.js'
 
 const key = 'AIzaSyDEO9bMG0RJLyUr1GK3xiUqD__TN5rdjio'
 var listItems = []
@@ -62,19 +63,15 @@ class App extends Component {
 
     axios.all(promises).then((results)=>{
       results.forEach((response)=>{
-        response.data.routes[0].legs[0].steps.forEach((start_location)=>{
-          var lat = start_location.start_location.lat
-          var lng = start_location.start_location.lng
 
-          myCoordinates.push([lat, lng])
-        })
-      })
-      console.log(myCoordinates);
-      console.log(this);
-      this.setState({coordinates: myCoordinates}, ()=>{
-        console.log(this.state);
-      })
+        let startLat = response.data.routes[0].legs[0].start_location.lat;
+        let startLng = response.data.routes[0].legs[0].start_location.lng;
+        let endLat = response.data.routes[0].legs[0].end_location.lat;
+        let endLng = response.data.routes[0].legs[0].end_location.lng;
 
+        myCoordinates.push([startLat, startLng], [endLat, endLng]);
+      })
+      this.setState({coordinates: myCoordinates})
     })
   }
 
@@ -84,7 +81,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <JourneyMap coordinates={this.state.coordinates}/>
+        <MyMap coordinates={this.state.coordinates}/>
         <ListFormHeader />
         <List items={this.state.listItems} removeItem={this.removeItem} />
         <ListForm addItem={this.addItem} />
@@ -97,3 +94,6 @@ class App extends Component {
 }
 
 export default App;
+
+
+// <JourneyMap coordinates={this.state.coordinates}/>

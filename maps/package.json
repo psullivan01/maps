@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "fuse-js-latest": "^3.1.0",
+    "leaflet-curve": "^1.0.0",
     "leaflet-routing-machine": "^3.2.8",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
