@@ -6,6 +6,7 @@ import List from './components/List.js'
 import ListFormHeader from './components/ListFormHeader.js'
 import ListForm from './components/ListForm.js'
 import GenerateButton from './components/GenerateButton.js'
+import MyMap from './components/MyMap.js'
 
 const key = 'AIzaSyDEO9bMG0RJLyUr1GK3xiUqD__TN5rdjio'
 var listItems = []
@@ -80,7 +81,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <JourneyMap coordinates={this.state.coordinates}/>
+        <MyMap coordinates={this.state.coordinates}/>
         <ListFormHeader />
         <List items={this.state.listItems} removeItem={this.removeItem} />
         <ListForm addItem={this.addItem} />
@@ -93,3 +94,6 @@ class App extends Component {
 }
 
 export default App;
+
+
+// <JourneyMap coordinates={this.state.coordinates}/>
