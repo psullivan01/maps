@@ -53,6 +53,20 @@ class MyMap extends Component {
                     'Q', midpointLatLng,
                         latlng2
                 ], pathOptions).addTo(this.map);
+
+            console.log(this.curvedPath.getPath())
+
+            // find bezier extrema
+            let t = .5,
+                exLat = ((1 - t) * (1 - t) * latlng1[0]) + (2 * (1 - t) * t * midpointLatLng[0]) + ( t * t * latlng2[0]),
+                exLng = ((1 - t) * (1 - t) * latlng1[1]) + (2 * (1 - t) * t * midpointLatLng[1]) + ( t * t * latlng2[1]);
+            
+            var planeIcon = L.icon({
+                iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Plane_icon.svg',
+                iconSize: [10, 10],
+            })
+
+            this.addIcon = L.marker([exLat, exLng], {icon: planeIcon}).addTo(this.map);
         }
     }
 
@@ -70,7 +84,6 @@ class MyMap extends Component {
     }
 
     componentDidUpdate() {
-        console.log('*********', this.props.coordinates)
         this.createCurves()
     }
 
