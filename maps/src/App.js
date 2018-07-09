@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './styles/App.css';
 import axios from 'axios'
-import JourneyMap from './components/JourneyMap.js'
 import List from './components/List.js'
 import ListFormHeader from './components/ListFormHeader.js'
 import ListForm from './components/ListForm.js'
@@ -95,5 +94,3 @@ class App extends Component {
 
 export default App;
 
-
-// <JourneyMap coordinates={this.state.coordinates}/>

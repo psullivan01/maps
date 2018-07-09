@@ -2,3 +2,22 @@
     height: 400px;
     width: 100%;
 }
+
+#outer {
+    border: .4em solid black;
+}
+
+#inner {
+    margin: .4em;
+    border: .2em solid black;
+}
+
+#legend {
+    display: block;
+    padding: 1em 3em;
+    margin: 2em;
+    box-sizing: border-box;
+    background-clip: border-box;
+    background-position-x: 0%;
+    background-position-y: 0%;
+}

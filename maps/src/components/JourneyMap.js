@@ -10,7 +10,7 @@ const zoomLevel = 4;
 
 function JourneyMap({ coordinates }) {
 	return (
-		<div>
+		<div id="journey-map">
 			<Map center={mapCenter} zoom={zoomLevel}>
 				<TileLayer attribution={stamenTonerAttr} url={stamenTonerTiles} />
 				<Polyline positions={ coordinates }/>
