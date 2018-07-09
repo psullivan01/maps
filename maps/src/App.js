@@ -9,9 +9,7 @@ import MyMap from './components/MyMap.js'
 
 const key = 'AIzaSyDEO9bMG0RJLyUr1GK3xiUqD__TN5rdjio'
 var listItems = []
-listItems.unshift({index: 3, value: "Atlanta, GA"})
-listItems.unshift({index: 2, value: "Dallas, TX"})
-listItems.unshift({index: 1, value: "New York, NY"})
+var coordinates = []
 
 class App extends Component {
 
@@ -20,6 +18,7 @@ class App extends Component {
 
     this.addItem = this.addItem.bind(this)
     this.removeItem = this.removeItem.bind(this)
+    this.addCoordinates = this.addCoordinates.bind(this)
 
     this.state = {
       options: [],
@@ -27,51 +26,56 @@ class App extends Component {
       lat: [],
       long: [],
       listItems: listItems,
-      coordinates: [],
+      coordinates: coordinates,
     }
   }
 
   addItem(listItem) {
-    var listLength = listItems.length
-    var lastItem = listItems.slice(listLength - 1, listLength)
+    if (listItems.length) {
+      var listLength = listItems.length
+      var lastItem = listItems.slice(listLength - 1, listLength)
 
-    listItems.push({
-      index: lastItem[0].index + 1,
-      value: listItem.newItemValue
-    })
+      listItems.push({
+        index: lastItem[0].index + 1,
+        value: listItem.newItemValue
+      })
+    } else {
+      listItems.push({
+        index: 0,
+        value: listItem.newItemValue,
+      })
+    }
 
     this.setState({listItems: listItems})
+  }
 
+  addCoordinates(latLng) {
+    if (coordinates.length) {
+      var coordinatesLength = coordinates.length;
+      var lastCoordinate = coordinates.slice(coordinatesLength - 1, coordinatesLength);
+
+      coordinates.push({
+        index: lastCoordinate[0].index + 1,
+        value: latLng
+      }) 
+    } else {
+      coordinates.push({
+        index: 0,
+        value: latLng
+      })
+    }
+
+    this.setState({ coordinates: coordinates })
   }
 
   removeItem(itemIndex) {
     listItems.splice(itemIndex, 1)
-    this.setState({listItems: listItems})
-  }
-
-  executeGet() {
-    var myCoordinates = []
-    var promises = []
-
-    for (var y=0; y<listItems.length-1; y++) {
-      var origin = listItems[y].value
-      var destination = listItems[y+1].value
-      var url = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination=' + destination + '&key=' + key
-      promises.push(axios.get(url))
-    }
-
-    axios.all(promises).then((results)=>{
-      results.forEach((response)=>{
-
-        let startLat = response.data.routes[0].legs[0].start_location.lat;
-        let startLng = response.data.routes[0].legs[0].start_location.lng;
-        let endLat = response.data.routes[0].legs[0].end_location.lat;
-        let endLng = response.data.routes[0].legs[0].end_location.lng;
-
-        myCoordinates.push([startLat, startLng], [endLat, endLng]);
-      })
-      this.setState({coordinates: myCoordinates})
+    coordinates.splice(itemIndex, 1)
+    this.setState({
+      listItems: listItems,
+      coordinates: coordinates
     })
+
   }
 
   render() {
@@ -83,10 +87,7 @@ class App extends Component {
         <MyMap coordinates={this.state.coordinates}/>
         <ListFormHeader />
         <List items={this.state.listItems} removeItem={this.removeItem} />
-        <ListForm addItem={this.addItem} />
-        <br />
-        <GenerateButton executeGet={this.executeGet.bind(this)} />
-
+        <ListForm addItem={this.addItem} addCoordinates={this.addCoordinates} />
       </div>
     );
   }
