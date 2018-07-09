@@ -42,12 +42,19 @@ class MyMap extends Component {
     }
 
     createCurves() {
+
+        if (this.curvedPath) {
+            console.log('MAP TEST', this.curvedPath)
+            this.map.removeLayer(this.curvedPath);
+        }
+
         let initialCoords = []
 
         for (let x=0; x<this.props.coordinates.length; x++) {
-            if (x===0 || x%2 > 0) {
-                initialCoords.push(this.props.coordinates[x])
-            }
+            initialCoords.push([
+                this.props.coordinates[x].value.lat,
+                this.props.coordinates[x].value.lng
+            ]) 
         }
         
         for (let i=0; i<initialCoords.length - 1; i++) {
@@ -119,7 +126,7 @@ class MyMap extends Component {
     }
 
     componentDidUpdate() {
-        this.createCurves()
+        this.createCurves();
     }
 
     render() {

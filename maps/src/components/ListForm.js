@@ -8,7 +8,8 @@ class ListForm extends Component {
 		// this.onSubmit = this.onSubmit.bind(this)
 
 		this.state = {
-			location: ''
+			location: '',
+			coordinates: []
 		};
 	}
 
@@ -20,11 +21,12 @@ class ListForm extends Component {
 		var newItemValue = location;
 		if (newItemValue) {
 			this.props.addItem({ newItemValue });
-			this.setState({ location: "" });
+			this.setState({ location: '' });
 		}
 
 		geocodeByAddress(location)
 			.then(results => getLatLng(results[0]))
+			.then(latLng => this.props.addCoordinates(latLng))
 			.then(latLng => console.log('Success', latLng))
 			.catch(error => console.error('Error', error));
 	}
