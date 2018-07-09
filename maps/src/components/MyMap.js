@@ -42,13 +42,9 @@ class MyMap extends Component {
     }
 
     createCurves() {
-
-        if (this.curvedPath) {
-            console.log('MAP TEST', this.curvedPath)
-            this.map.removeLayer(this.curvedPath);
-        }
-
-        let initialCoords = []
+        var initialCoords = []
+        var curves = []
+        var icons = []
 
         for (let x=0; x<this.props.coordinates.length; x++) {
             initialCoords.push([
@@ -87,16 +83,16 @@ class MyMap extends Component {
                 dashArray: '7, 5'
             }
 
-            this.curvedPath = L.curve(
+            curves.push(L.curve(
                 [
                     'M', latlng1,
                     'Q', midpointLatLng,
                         latlng2
-                ], pathOptions).addTo(this.map);
+                ], pathOptions))
 
             let bearing = this.getBearing(latlng1[0], latlng1[1], latlng2[0], latlng2[1]);
 
-            console.log(this.curvedPath.getPath(), '*bearing*', bearing);
+            // console.log(this.curvedPath.getPath(), '*bearing*', bearing);
 
             // find bezier extrema
             let t = .5,
@@ -108,7 +104,12 @@ class MyMap extends Component {
                 iconSize: [10, 10],
             })
 
-            this.addIcon = L.marker([exLat, exLng], {icon: planeIcon}).addTo(this.map);
+            icons.push(L.marker([exLat, exLng], {icon: planeIcon}));
+        }
+
+        for (var y=0; y<curves.length; y++) {
+            this.map.addLayer(curves[y]);
+            this.map.addLayer(icons[y]);
         }
     }
 
@@ -126,6 +127,15 @@ class MyMap extends Component {
     }
 
     componentDidUpdate() {
+        var mapLayer = L.tileLayer(stamenTonerTiles, {
+            attribution: stamenTonerAttr
+        })
+
+        this.map.eachLayer((layer)=>{
+            this.map.removeLayer(layer)
+        })
+
+        this.map.addLayer(mapLayer)
         this.createCurves();
     }
 
