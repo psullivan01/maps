@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import curve from 'leaflet-curve'
-import '../styles/JourneyMap.css';
+import '../styles/MyMap.css';
 
 const stamenTonerTiles = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 const stamenTonerAttr = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
@@ -117,8 +117,9 @@ class MyMap extends Component {
             this.map.addLayer(curves[y]);
             this.map.addLayer(icons[y]);
         }
-
     }
+
+
 
     componentDidMount() {
         this.map = L.map('map', {
@@ -131,6 +132,18 @@ class MyMap extends Component {
                 }),
             ]
         });
+
+        // // uncomment when ready to add label to map
+        // var myTextLabel = L.marker(mapCenter, {
+        //     icon: L.divIcon({
+        //         className: 'text-labels',  
+        //         html: 'My Journey Map',
+        //         iconSize: [200, 25]
+        //     }),
+        //     zIndexOffset: 1000     
+        // }); 
+
+        // this.map.addLayer(myTextLabel)
     }
 
     componentDidUpdate() {
