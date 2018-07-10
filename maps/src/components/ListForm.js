@@ -38,7 +38,7 @@ class ListForm extends Component {
 				<div>
 					<input
 					{...getInputProps({
-						placeholder: 'Search Places ...',
+						placeholder: 'Search Places...',
 						className: 'location-search-input',
 					})}
 					/>
