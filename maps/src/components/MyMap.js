@@ -132,7 +132,9 @@ class MyMap extends Component {
         })
 
         this.map.eachLayer((layer)=>{
-            this.map.removeLayer(layer)
+            if (!layer._url) {
+                this.map.removeLayer(layer)
+            }
         })
 
         this.map.addLayer(mapLayer)
