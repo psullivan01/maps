@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
-import curve from 'leaflet-curve';
+import curve from 'leaflet-curve'
 import '../styles/JourneyMap.css';
-import { RSA_PKCS1_OAEP_PADDING } from 'constants';
-import 'leaflet-rotatedmarker';
 
 const stamenTonerTiles = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 const stamenTonerAttr = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
@@ -23,8 +21,7 @@ class MyMap extends Component {
     getBearing(lat1, lng1, lat2, lng2) {
         let initial = 210;
 
-        let dLat = this.toRad(lat2 - lat1),
-            dLng = this.toRad(lng2 - lng1);
+        let dLng = this.toRad(lng2 - lng1);
 
         lat1 = this.toRad(lat1);
         lat2 = this.toRad(lat2);
@@ -42,19 +39,15 @@ class MyMap extends Component {
     }
 
     addMarkers() {
-        var markers = []
-
         for (let m=0; m<this.props.coordinates.length; m++) {
             L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(this.map);
         }
-
     }
 
     createCurves() {
         var initialCoords = []
         var curves = []
         var icons = []
-        var markers = []
 
         for (let x=0; x<this.props.coordinates.length; x++) {
             initialCoords.push([

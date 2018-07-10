@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import './styles/App.css';
-import axios from 'axios'
 import List from './components/List.js'
 import ListFormHeader from './components/ListFormHeader.js'
 import ListForm from './components/ListForm.js'
-import GenerateButton from './components/GenerateButton.js'
 import MyMap from './components/MyMap.js'
+import ToggleMarker from './components/ToggleMarker.js'
 
-const key = 'AIzaSyDEO9bMG0RJLyUr1GK3xiUqD__TN5rdjio'
 var listItems = []
 var coordinates = []
 
@@ -84,10 +82,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <MyMap coordinates={this.state.coordinates}/>
+        <MyMap coordinates={this.state.coordinates}/> 
         <ListFormHeader />
         <List items={this.state.listItems} removeItem={this.removeItem} />
         <ListForm addItem={this.addItem} addCoordinates={this.addCoordinates} />
+        <ToggleMarker />
       </div>
     );
   }
