@@ -41,10 +41,20 @@ class MyMap extends Component {
         return initial - bearing;
     }
 
+    addMarkers() {
+        var markers = []
+
+        for (let m=0; m<this.props.coordinates.length; m++) {
+            L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(this.map);
+        }
+
+    }
+
     createCurves() {
         var initialCoords = []
         var curves = []
         var icons = []
+        var markers = []
 
         for (let x=0; x<this.props.coordinates.length; x++) {
             initialCoords.push([
@@ -54,6 +64,7 @@ class MyMap extends Component {
         }
         
         for (let i=0; i<initialCoords.length - 1; i++) {
+
             let latlngs = []
 
             let latlng1 = [initialCoords[i][0], initialCoords[i][1]],
@@ -111,6 +122,7 @@ class MyMap extends Component {
             this.map.addLayer(curves[y]);
             this.map.addLayer(icons[y]);
         }
+
     }
 
     componentDidMount() {
@@ -127,6 +139,7 @@ class MyMap extends Component {
     }
 
     componentDidUpdate() {
+
         var mapLayer = L.tileLayer(stamenTonerTiles, {
             attribution: stamenTonerAttr
         })
@@ -137,7 +150,7 @@ class MyMap extends Component {
             }
         })
 
-        this.map.addLayer(mapLayer)
+        this.addMarkers();
         this.createCurves();
     }
 
