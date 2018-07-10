@@ -39,8 +39,10 @@ class MyMap extends Component {
     }
 
     addMarkers() {
-        for (let m=0; m<this.props.coordinates.length; m++) {
-            L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(this.map);
+        if (this.props.markers === 'on') {
+            for (let m=0; m<this.props.coordinates.length; m++) {
+                L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(this.map);
+            }
         }
     }
 

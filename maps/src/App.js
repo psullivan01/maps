@@ -17,6 +17,7 @@ class App extends Component {
     this.addItem = this.addItem.bind(this)
     this.removeItem = this.removeItem.bind(this)
     this.addCoordinates = this.addCoordinates.bind(this)
+    this.onRadioChange = this.onRadioChange.bind(this)
 
     this.state = {
       options: [],
@@ -25,6 +26,7 @@ class App extends Component {
       long: [],
       listItems: listItems,
       coordinates: coordinates,
+      markers: 'on'
     }
   }
 
@@ -76,17 +78,24 @@ class App extends Component {
 
   }
 
+
+  onRadioChange(event) {
+    this.setState({
+        markers: event.currentTarget.value
+    })
+  }
+
   render() {
 
     console.log(this.state)
 
     return (
       <div className="App">
-        <MyMap coordinates={this.state.coordinates}/> 
+        <MyMap coordinates={this.state.coordinates} markers={this.state.markers}/> 
         <ListFormHeader />
         <List items={this.state.listItems} removeItem={this.removeItem} />
         <ListForm addItem={this.addItem} addCoordinates={this.addCoordinates} />
-        <ToggleMarker />
+        <ToggleMarker onRadioChange={this.onRadioChange} markers={this.state.markers}/>
       </div>
     );
   }
