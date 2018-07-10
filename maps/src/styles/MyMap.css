@@ -22,3 +22,7 @@
     background-position-y: 0%;
     background-image: none;
 }
+
+.leaflet-marker-icon .text-labels .leaflet-zoom-animated .leaflet-interactive {
+    width: 200px;
+}
