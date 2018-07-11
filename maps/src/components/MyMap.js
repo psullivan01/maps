@@ -46,6 +46,30 @@ class MyMap extends Component {
         }
     }
 
+    setBounds() {
+        if (this.props.coordinates.length) {
+            var latitudes = []
+            var longitudes = []
+
+            for (var l=0; l<this.props.coordinates.length; l++) {
+                latitudes.push(this.props.coordinates[l].value.lat);
+                longitudes.push(this.props.coordinates[l].value.lng);
+            }
+            
+            var maxLat = Math.max(...latitudes),
+                maxLng = Math.max(...longitudes),
+                minLat = Math.min(...latitudes),
+                minLng = Math.min(...longitudes);
+
+            var upperLeft = L.latLng(maxLat, minLng),
+                lowerRight = L.latLng(minLat, maxLng);
+
+            var bounds = L.latLngBounds(upperLeft, lowerRight);
+
+            this.map.fitBounds(bounds);
+        }
+    }
+
     createCurves() {
         var initialCoords = []
         var curves = []
@@ -160,6 +184,7 @@ class MyMap extends Component {
 
         this.addMarkers();
         this.createCurves();
+        this.setBounds();
     }
 
     render() {
