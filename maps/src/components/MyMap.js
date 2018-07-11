@@ -149,6 +149,8 @@ class MyMap extends Component {
         this.map = L.map('map', {
             center: mapCenter,
             zoom: zoomLevel,
+            zoomSnap: 0,
+            zoomDelta: 0.1,
             attributionControl: false,
             layers: [
                 L.tileLayer(stamenTonerTiles, {
