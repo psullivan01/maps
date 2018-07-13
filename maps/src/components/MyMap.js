@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import L from 'leaflet';
 import curve from 'leaflet-curve'
 import '../styles/MyMap.css';
+import provider from 'leaflet-providers'
 
 const stamenTonerTiles = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 const stamenTonerAttr = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
@@ -39,6 +40,10 @@ class MyMap extends Component {
     }
 
     addMarkers() {
+        // var pushPinIcon = L.icon({
+        //     iconUrl: 'http://siamvacuumcoat2009.com/images/icon.512x512-75%20(1).png'
+        // })
+
         if (this.props.markers === 'on') {
             for (let m=0; m<this.props.coordinates.length; m++) {
                 L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(this.map);
@@ -143,7 +148,15 @@ class MyMap extends Component {
         }
     }
 
+    changeTileLayer() {
+        var layerValues = {
+            traditional: 'Esri.NatGeoWorldMap',
+            terrain: 'Stamen.TerrainBackground',
+            watercolor: 'Stamen.Watercolor'
+        }
 
+        L.tileLayer.provider(layerValues[this.props.tileLayer]).addTo(this.map)
+    }
 
     componentDidMount() {
         this.map = L.map('map', {
@@ -151,9 +164,7 @@ class MyMap extends Component {
             zoom: zoomLevel,
             attributionControl: false,
             layers: [
-                L.tileLayer(stamenTonerTiles, {
-                    attribution: stamenTonerAttr
-                }),
+                L.tileLayer.provider('Esri.NatGeoWorldMap')
             ]
         });
 
@@ -185,6 +196,7 @@ class MyMap extends Component {
         this.addMarkers();
         this.createCurves();
         this.setBounds();
+        this.changeTileLayer();
     }
 
     render() {
