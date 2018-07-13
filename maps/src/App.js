@@ -5,6 +5,7 @@ import ListFormHeader from './components/ListFormHeader.js'
 import ListForm from './components/ListForm.js'
 import MyMap from './components/MyMap.js'
 import ToggleMarker from './components/ToggleMarker.js'
+import LayerDropdown from './components/LayerDropdown.js'
 
 var listItems = []
 var coordinates = []
@@ -18,6 +19,7 @@ class App extends Component {
     this.removeItem = this.removeItem.bind(this)
     this.addCoordinates = this.addCoordinates.bind(this)
     this.onRadioChange = this.onRadioChange.bind(this)
+    this.getDropdown = this.getDropdown.bind(this)
 
     this.state = {
       options: [],
@@ -26,7 +28,8 @@ class App extends Component {
       long: [],
       listItems: listItems,
       coordinates: coordinates,
-      markers: 'on'
+      markers: 'on',
+      tileLayer: 'traditional'
     }
   }
 
@@ -78,10 +81,15 @@ class App extends Component {
 
   }
 
-
   onRadioChange(event) {
     this.setState({
-        markers: event.currentTarget.value
+      markers: event.currentTarget.value
+    })
+  }
+
+  getDropdown(event) {
+    this.setState({
+      tileLayer: event.target.value
     })
   }
 
@@ -91,11 +99,16 @@ class App extends Component {
 
     return (
       <div className="App">
-        <MyMap coordinates={this.state.coordinates} markers={this.state.markers}/> 
+        <MyMap 
+          coordinates={this.state.coordinates} 
+          markers={this.state.markers} 
+          tileLayer={this.state.tileLayer}
+        /> 
         <ListFormHeader />
         <List items={this.state.listItems} removeItem={this.removeItem} />
         <ListForm addItem={this.addItem} addCoordinates={this.addCoordinates} />
         <ToggleMarker onRadioChange={this.onRadioChange} markers={this.state.markers}/>
+        <LayerDropdown getDropdown={this.getDropdown} />
       </div>
     );
   }
