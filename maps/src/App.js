@@ -6,9 +6,15 @@ import ListForm from './components/ListForm.js'
 import MyMap from './components/MyMap.js'
 import ToggleMarker from './components/ToggleMarker.js'
 import LayerDropdown from './components/LayerDropdown.js'
+import MagnifyingGlassControl from 'react-leaflet-magnifying-glass';
 
 var listItems = []
 var coordinates = []
+const options = {
+  position: 'topleft',
+  radius: 100,
+  zoomOffset: 3
+}
 
 class App extends Component {
 
@@ -105,10 +111,21 @@ class App extends Component {
           tileLayer={this.state.tileLayer}
         /> 
         <ListFormHeader />
-        <List items={this.state.listItems} removeItem={this.removeItem} />
-        <ListForm addItem={this.addItem} addCoordinates={this.addCoordinates} />
-        <ToggleMarker onRadioChange={this.onRadioChange} markers={this.state.markers}/>
-        <LayerDropdown getDropdown={this.getDropdown} />
+        <List 
+          items={this.state.listItems} 
+          removeItem={this.removeItem} 
+        />
+        <ListForm 
+          addItem={this.addItem} 
+          addCoordinates={this.addCoordinates} 
+        />
+        <ToggleMarker 
+          onRadioChange={this.onRadioChange} 
+          markers={this.state.markers}
+        />
+        <LayerDropdown 
+          getDropdown={this.getDropdown} 
+        />
       </div>
     );
   }

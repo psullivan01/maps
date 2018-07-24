@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import L from 'leaflet';
 import curve from 'leaflet-curve'
 import '../styles/MyMap.css';
-import provider from 'leaflet-providers'
+import provider from 'leaflet-providers';
+import easyButton from 'leaflet-easybutton';
 
-const stamenTonerTiles = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-const stamenTonerAttr = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
-const mapCenter = [32.7759428, -96.7967532];
-const zoomLevel = 4;
+const stamenTonerTiles = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    stamenTonerAttr = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+    mapCenter = [32.7759428, -96.7967532],
+    zoomLevel = 4
 
 class MyMap extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            magnifyingGlass: false
+        }
+    }
+
 
     toRad(coord) {
         return coord * Math.PI / 180;
@@ -155,7 +164,29 @@ class MyMap extends Component {
             watercolor: 'Stamen.Watercolor'
         }
 
-        L.tileLayer.provider(layerValues[this.props.tileLayer]).addTo(this.map)
+        L.tileLayer.provider(layerValues[this.props.tileLayer]).addTo(this.map);
+    }
+    
+    addMagnifyingGlass() {
+        if (this.state.magnifyingGlass) {
+            this.magnifyingGlass = L.magnifyingGlass({
+                zoomOffset: 3,
+                layers: [
+                    L.tileLayer.provider('Esri.NatGeoWorldMap')
+                ]
+            })
+
+            this.map.addLayer(this.magnifyingGlass);
+        }
+
+        if (this.state.magnifyingGlass) {
+            var miniMap = this.magnifyingGlass.getMap();
+            if (this.props.markers === 'on') {
+                for (let m=0; m<this.props.coordinates.length; m++) {
+                    L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(miniMap);
+                }
+            }
+        }
     }
 
     componentDidMount() {
@@ -167,6 +198,11 @@ class MyMap extends Component {
                 L.tileLayer.provider('Esri.NatGeoWorldMap')
             ]
         });
+
+        L.easyButton( '<span class="star">&starf;</span>', ()=>{
+            this.setState({magnifyingGlass: !this.state.magnifyingGlass})
+            console.log(this.state)
+        }).addTo(this.map);
 
         // // uncomment when ready to add label to map
         // var myTextLabel = L.marker(mapCenter, {
@@ -181,6 +217,7 @@ class MyMap extends Component {
         // this.map.addLayer(myTextLabel)
     }
 
+
     componentDidUpdate() {
 
         var mapLayer = L.tileLayer(stamenTonerTiles, {
@@ -193,10 +230,12 @@ class MyMap extends Component {
             }
         })
 
+        this.addMagnifyingGlass();
         this.addMarkers();
         this.createCurves();
         this.setBounds();
         this.changeTileLayer();
+        // this.addMiniMap();
     }
 
     render() {
