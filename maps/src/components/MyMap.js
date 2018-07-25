@@ -15,7 +15,10 @@ class MyMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            magnifyingGlass: false
+            magnifyingGlass: false,
+            fixedMagnifyingGlass: false.coordinate,
+            magnifyingGlassLatLng: mapCenter,
+            mangifyingGlassRadius: 100
         }
     }
 
@@ -173,7 +176,10 @@ class MyMap extends Component {
                 zoomOffset: 3,
                 layers: [
                     L.tileLayer.provider('Esri.NatGeoWorldMap')
-                ]
+                ],
+                fixedPosition: this.state.fixedMagnifyingGlass,
+                latLng: this.state.magnifyingGlassLatLng,
+                radius: this.props.radius
             })
 
             this.map.addLayer(this.magnifyingGlass);
@@ -181,6 +187,15 @@ class MyMap extends Component {
 
         if (this.state.magnifyingGlass) {
             var miniMap = this.magnifyingGlass.getMap();
+            
+            miniMap.on('click', (e)=>{
+                this.setState({
+                    fixedMagnifyingGlass: !this.state.fixedMagnifyingGlass,
+                    magnifyingGlassLatLng: [e.latlng.lat, e.latlng.lng]
+                })
+                console.log(this.state)
+            })
+
             if (this.props.markers === 'on') {
                 for (let m=0; m<this.props.coordinates.length; m++) {
                     L.marker([this.props.coordinates[m].value.lat, this.props.coordinates[m].value.lng]).addTo(miniMap);
@@ -219,6 +234,9 @@ class MyMap extends Component {
 
 
     componentDidUpdate() {
+        if (!this.state.magnifyingGlass) {
+            this.map = this.map
+        }
 
         var mapLayer = L.tileLayer(stamenTonerTiles, {
             attribution: stamenTonerAttr
