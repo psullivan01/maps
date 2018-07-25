@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import './styles/App.css';
-import List from './components/List.js'
-import ListFormHeader from './components/ListFormHeader.js'
-import ListForm from './components/ListForm.js'
-import MyMap from './components/MyMap.js'
-import ToggleMarker from './components/ToggleMarker.js'
-import LayerDropdown from './components/LayerDropdown.js'
+import List from './components/List.js';
+import ListFormHeader from './components/ListFormHeader.js';
+import ListForm from './components/ListForm.js';
+import MyMap from './components/MyMap.js';
+import ToggleMarker from './components/ToggleMarker.js';
+import LayerDropdown from './components/LayerDropdown.js';
+import MagnifyingGlassControl from 'react-leaflet-magnifying-glass';
+import RadiusSlider from './components/RadiusSlider.js';
 
 var listItems = []
 var coordinates = []
+const options = {
+  position: 'topleft',
+  radius: 100,
+  zoomOffset: 3
+}
 
 class App extends Component {
 
@@ -20,6 +27,7 @@ class App extends Component {
     this.addCoordinates = this.addCoordinates.bind(this)
     this.onRadioChange = this.onRadioChange.bind(this)
     this.getDropdown = this.getDropdown.bind(this)
+    this.getRadius = this.getRadius.bind(this)
 
     this.state = {
       options: [],
@@ -29,7 +37,8 @@ class App extends Component {
       listItems: listItems,
       coordinates: coordinates,
       markers: 'on',
-      tileLayer: 'traditional'
+      tileLayer: 'traditional',
+      radius: 100
     }
   }
 
@@ -93,6 +102,12 @@ class App extends Component {
     })
   }
 
+  getRadius(event) {
+    this.setState({
+      radius: event.target.value
+    })
+  }
+
   render() {
 
     console.log(this.state)
@@ -103,12 +118,27 @@ class App extends Component {
           coordinates={this.state.coordinates} 
           markers={this.state.markers} 
           tileLayer={this.state.tileLayer}
-        /> 
+          radius={this.state.radius}
+        />   
         <ListFormHeader />
-        <List items={this.state.listItems} removeItem={this.removeItem} />
-        <ListForm addItem={this.addItem} addCoordinates={this.addCoordinates} />
-        <ToggleMarker onRadioChange={this.onRadioChange} markers={this.state.markers}/>
-        <LayerDropdown getDropdown={this.getDropdown} />
+        <List 
+          items={this.state.listItems} 
+          removeItem={this.removeItem} 
+        />
+        <ListForm 
+          addItem={this.addItem} 
+          addCoordinates={this.addCoordinates} 
+        />
+        <ToggleMarker 
+          onRadioChange={this.onRadioChange} 
+          markers={this.state.markers}
+        />
+        <LayerDropdown 
+          getDropdown={this.getDropdown} 
+        />
+        <RadiusSlider
+          getRadius={this.getRadius}
+        />
       </div>
     );
   }
